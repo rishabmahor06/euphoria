@@ -177,8 +177,19 @@ const Footer = () => {
         </div>
       </div>
 
-      <div className="bg-white px-4 sm:px-8 lg:px-16 py-4 text-center text-sm text-[#1E381E]">
-        © 2025 House of Euphoria Private Limited. | All Rights Reserved.
+      <div className="bg-white px-4 sm:px-8 lg:px-16 py-4 flex flex-col md:flex-row items-center justify-between gap-2 text-center text-sm text-[#1E381E]">
+        <span>© 2025 House of Euphoria Private Limited. | All Rights Reserved.</span>
+        <span>
+          Designed &amp; Developed by{" "}
+          <a
+            href="https://rishabmahor.vercel.app/"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="font-semibold underline-offset-4 hover:underline"
+          >
+            Rishab Kumar
+          </a>
+        </span>
       </div>
     </footer>
   );
