@@ -193,7 +193,7 @@ const Necklase = () => {
 
       <div className="px-4 sm:px-8 lg:px-16 py-6 flex gap-8 items-start">
         {/* Left: filters. Scrolls on its own only after "View more" is opened. */}
-        <aside className="hidden lg:block w-72 shrink-0 sticky top-4">
+        <aside className="hidden lg:block w-72 shrink-0 sticky top-[5.25rem]">
           <div
             className={
               "pr-3 " +
@@ -201,7 +201,7 @@ const Necklase = () => {
                 ? "overflow-y-auto overscroll-contain [scrollbar-width:thin]"
                 : "overflow-hidden")
             }
-            style={{ maxHeight: "calc(100vh - 2rem)" }}
+            style={{ maxHeight: "calc(100vh - 6.5rem)" }}
           >
             {panel}
           </div>

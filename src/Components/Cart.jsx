@@ -207,7 +207,7 @@ const Cart = () => {
               </div>
             </div>
 
-            <div className="w-full lg:w-96 shrink-0 rounded-xl bg-white shadow-sm lg:sticky lg:top-4">
+            <div className="w-full lg:w-96 shrink-0 rounded-xl bg-white shadow-sm lg:sticky lg:top-24">
               <h1 className="flex items-center gap-3 px-5 py-5 text-[#264726] font-bold text-2xl border-b">
                 <LuCrown />
                 Order Summary

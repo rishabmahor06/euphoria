@@ -77,7 +77,7 @@ const Shop = () => {
         / <span className="text-[#1E381E] font-semibold">Shop</span>
       </div>
 
-      <div className="sticky top-0 z-20 bg-[#F9EEDC]/95 backdrop-blur px-4 sm:px-8 lg:px-16 py-4 mt-2 border-b border-[#1E381E]/10">
+      <div className="sticky top-[4.25rem] z-20 bg-[#F9EEDC]/95 backdrop-blur px-4 sm:px-8 lg:px-16 py-4 mt-2 border-b border-[#1E381E]/10">
         <div className="flex gap-2 overflow-x-auto pb-3 -mx-1 px-1 [scrollbar-width:none]">
           {categories.map((c) => (
             <button

@@ -93,12 +93,16 @@ const Navbar = () => {
     navigate(`/shop?q=${encodeURIComponent(q.trim())}`);
   };
 
+  // thin underline that grows on hover and stays under the active page
   const linkClass = ({ isActive }) =>
-    isActive ? "text-red-600 font-bold" : "text-black";
+    "relative py-1 transition-colors after:absolute after:left-0 after:-bottom-0.5 after:h-[2px] after:rounded-full after:bg-[#1E381E] after:transition-all after:duration-300 " +
+    (isActive
+      ? "text-[#1E381E] font-semibold after:w-full"
+      : "text-gray-700 hover:text-[#1E381E] after:w-0 hover:after:w-full");
 
   return (
-    <div className="relative">
-      <div className="bg-[#183818] text-white text-center text-sm sm:text-base py-2 px-2">
+    <div className="sticky top-0 z-40">
+      <div className="bg-[#183818] text-white text-center text-xs sm:text-sm py-1 px-2 tracking-wide">
         <h1>
           Use Code:{" "}
           <Link to="" className="underline">
@@ -107,9 +111,9 @@ const Navbar = () => {
           for Extra Discount
         </h1>
       </div>
-      <div className="flex items-center justify-between shadow-2xl bg-white px-4 sm:px-7 py-2">
+      <div className="flex items-center justify-between bg-white/95 backdrop-blur shadow-[0_2px_12px_-4px_rgba(0,0,0,0.15)] px-4 sm:px-7 py-1">
         <button
-          className="md:hidden text-3xl text-black"
+          className="md:hidden text-2xl text-black"
           onClick={() => setOpen(!open)}
           aria-label="Toggle menu"
         >
@@ -117,10 +121,10 @@ const Navbar = () => {
         </button>
 
         <Link to="/" className="shrink-0">
-          <img src={logo} alt="Euphoria" className="h-12 sm:h-16 w-auto" />
+          <img src={logo} alt="Euphoria" className="h-8 sm:h-10 w-auto" />
         </Link>
 
-        <ul className="hidden md:flex gap-5 lg:gap-8 text-black text-lg lg:text-xl">
+        <ul className="hidden md:flex gap-6 lg:gap-9 text-[15px] lg:text-base tracking-wide">
           {links.map((l) => (
             <li key={l.to}>
               <NavLink to={l.to} className={linkClass}>
@@ -130,28 +134,28 @@ const Navbar = () => {
           ))}
         </ul>
 
-        <ul className="flex gap-3 sm:gap-4 text-black items-center">
+        <ul className="flex gap-1 sm:gap-2 text-black items-center">
           <li>
             <button
               onClick={() => setSearchOpen((v) => !v)}
               aria-label="Search"
               className="block"
             >
-              <CiSearch className="h-6 w-6 text-black" />
+              <CiSearch className="h-5 w-5 p-1.5 box-content rounded-full text-black transition hover:bg-[#f3e6cc]" />
             </button>
           </li>
           <li className="relative" ref={accountRef}>
             {token ? (
               <button onClick={() => setAccountOpen((v) => !v)} aria-label="Account" className="block">
-                <BiUser className="h-6 w-6 text-black" />
+                <BiUser className="h-5 w-5 p-1.5 box-content rounded-full text-black transition hover:bg-[#f3e6cc]" />
               </button>
             ) : (
               <Link to="/login">
-                <BiUser className="h-6 w-6 text-black" />
+                <BiUser className="h-5 w-5 p-1.5 box-content rounded-full text-black transition hover:bg-[#f3e6cc]" />
               </Link>
             )}
             {accountOpen && (
-              <div className="absolute right-0 top-9 z-50 w-48 overflow-hidden rounded-xl bg-white text-base shadow-xl ring-1 ring-black/5">
+              <div className="absolute right-0 top-10 z-50 w-48 overflow-hidden rounded-xl bg-white text-base shadow-xl ring-1 ring-black/5">
                 <p className="truncate border-b px-4 py-3 text-sm font-semibold text-[#1E381E]">Hi, {userName}</p>
                 <Link to="/orders" className="block px-4 py-2.5 hover:bg-[#F9EEDC]">
                   My Orders
@@ -169,13 +173,13 @@ const Navbar = () => {
           </li>
           <li>
             <Link to="/wishlist">
-              <CiHeart className="h-6 w-6 text-black" />
+              <CiHeart className="h-5 w-5 p-1.5 box-content rounded-full text-black transition hover:bg-[#f3e6cc]" />
             </Link>
           </li>
           <li>
             <Link to="/cart" className="relative block">
-              <CiShoppingCart className="h-6 w-6 text-black" />
-              <span className="absolute -top-2 -right-2 px-1 bg-yellow-400 text-xs rounded-3xl">
+              <CiShoppingCart className="h-5 w-5 p-1.5 box-content rounded-full text-black transition hover:bg-[#f3e6cc]" />
+              <span className="absolute top-0 right-0 min-w-[1rem] px-1 text-center bg-yellow-400 text-[10px] leading-4 font-bold rounded-full">
                 {cart.cartCount}
               </span>
             </Link>
