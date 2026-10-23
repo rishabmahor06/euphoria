@@ -2,52 +2,72 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+/* `clip` (not `hidden`) so position: sticky keeps working */
+html,
 body {
+  overflow-x: clip;
+}
+/* hide the scrollbar but keep scrolling */
+html {
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+body {
+  background: #f9eedc;
   padding: 0;
   margin: 0;
   /* width: 100%; */
-  background: #f9eedc;
   color: black;
   box-sizing: border-box;
 }
 .mySwiper {
   width: 100%;
-  height: calc(100vh - 200px);
+  height: 45vh;
+}
+@media (min-width: 768px) {
+  .mySwiper {
+    height: min(calc(100vh - 12.5rem), 51rem);
+  }
 }
 .craftvideo {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: 50vh;
   object-fit: cover;
+}
+@media (min-width: 768px) {
+  .craftvideo {
+    height: min(calc(100vh - 3.75rem), 56rem);
+  }
 }
 
 .craft {
   width: 100%;
   height: 100%;
-  padding-left: 50vw;
-  /* background: crimson; */
+  padding-left: 0;
 }
 /* my-10 mx-auto px-4 pt-5  */
 .swiperr {
-  width: 90%;
+  width: 92%;
   height: 100%;
   /* background: yellow; */
 }
 
 .swiper-pagination {
-  margin-top: 2vw; /* or any value you want */
+  margin-top: 1.5rem; /* or any value you want */
 }
 
-.swiper-slide {
-  width: 200px;
-}
 
 .productdetails {
-  position: absolute;
-  width: 40vw;
-  bottom: 10px;
-  left: 10px;
+  width: 100%;
   color: white;
-  padding: 10px;
   border-radius: 5px;
 }
 
@@ -79,4 +99,112 @@ body {
 }
 .swiper-button-next:hover{
   scale: 1.1;
+}
+
+/* Scale the whole UI with the viewport on wide screens, so browser zoom-out
+   (or a big monitor) looks the same as 100% zoom: everything is rem-based. */
+@media (min-width: 1600px) {
+  html {
+    font-size: calc(100vw / 100);
+  }
+}
+
+/* Signup page entrance animations */
+@keyframes auth-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes auth-zoom {
+  from {
+    transform: scale(1.15);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+@keyframes auth-slide-left {
+  from {
+    opacity: 0;
+    transform: translateX(-24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+.auth-card-in {
+  animation: auth-fade-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+.auth-img-zoom {
+  animation: auth-zoom 6s ease-out both;
+}
+.auth-quote-in {
+  animation: auth-slide-left 0.8s 0.5s ease-out both;
+}
+.auth-fade {
+  animation: auth-fade-in 0.45s ease-out both;
+}
+@keyframes auth-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.auth-up {
+  animation: auth-fade-up 0.6s 0.25s ease-out both;
+}
+.auth-stagger > form > * {
+  animation: auth-fade-up 0.55s ease-out both;
+}
+.auth-stagger > form > :nth-child(1) { animation-delay: 0.35s; }
+.auth-stagger > form > :nth-child(2) { animation-delay: 0.45s; }
+.auth-stagger > form > :nth-child(3) { animation-delay: 0.55s; }
+.auth-stagger > form > :nth-child(4) { animation-delay: 0.65s; }
+@media (prefers-reduced-motion: reduce) {
+  .auth-card-in,
+  .auth-img-zoom,
+  .auth-quote-in,
+  .auth-up,
+  .auth-fade,
+  .auth-stagger > form > * {
+    animation: none;
+  }
+}
+
+/* Custom toasts: bubble drop-in from the top centre */
+@keyframes toast-pop {
+  0% {
+    opacity: 0;
+    transform: translateY(-28px) scale(0.7);
+  }
+  60% {
+    opacity: 1;
+    transform: translateY(6px) scale(1.04);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes toast-away {
+  to {
+    opacity: 0;
+    transform: translateY(-14px) scale(0.85);
+  }
+}
+.toast-in {
+  animation: toast-pop 0.55s cubic-bezier(0.34, 1.4, 0.64, 1) both;
+}
+.toast-out {
+  animation: toast-away 0.25s ease-in both;
 }
