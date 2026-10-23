@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { CartContext } from "../context/Cart";
 import { Swiper, SwiperSlide } from "swiper/react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { toast } from "../toast";
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
@@ -14,23 +15,49 @@ import { FaTruckMoving } from "react-icons/fa";
 import { HiMiniShoppingBag } from "react-icons/hi2";
 import Footer from "./Footer";
 import { useParams } from "react-router-dom";
-import { woomen } from "../Data/women";
+import { useCatalog } from "../context/catalogContext";
 
-const ProductDetails = (props) => {
+const ProductDetails = () => {
   const cart = useContext(CartContext);
 
-  console.log("cart", cart.wishlist);
-
+  const navigate = useNavigate();
   const { id } = useParams();
 
-  const products = woomen.find((item) => item.id === parseInt(id));
+  const { find } = useCatalog();
+  const products = find(id);
+
+  const isClothing = products && products.group !== "jewellery";
+  const soldOut = products && products.stock === 0;
+  const entry = products && {
+    id: products.id,
+    name: products.title,
+    price: products.price,
+    img: products.first,
+    img2: products.second,
+  };
+  const inWishlist = products && cart.wishlist.some((w) => w.id === products.id);
+
+  if (!products) {
+    return (
+      <>
+        <Navbar />
+        <div className="px-10 py-20 text-center">
+          <h1 className="text-2xl mb-4">Product not found</h1>
+          <Link to="/women" className="text-blue-700 underline">
+            Back to shop
+          </Link>
+        </div>
+        <Footer />
+      </>
+    );
+  }
 
   return (
     <>
       <Navbar />
-      <div className="px-10 mt-10">
-        <div className="flex justify-center shadow-lg gap-16  mb-10">
-          <div>
+      <div className="px-4 md:px-10 mt-6 md:mt-10">
+        <div className="flex flex-col lg:flex-row justify-center shadow-lg gap-6 lg:gap-16 mb-10">
+          <div className="w-full lg:w-[40%] lg:max-w-xl shrink-0">
             <Swiper
               slidesPerView={1}
               spaceBetween={0}
@@ -46,33 +73,27 @@ const ProductDetails = (props) => {
               modules={[Autoplay, Pagination, Navigation]}
               className="productdetails"
             >
-              <SwiperSlide>
-                <img src={products.first} alt="" />
-              </SwiperSlide>
-              <SwiperSlide>
-                <img src={products.second} alt="" />
-              </SwiperSlide>
+              {products.images.map((src) => (
+                <SwiperSlide key={src}>
+                  <img src={src} alt={products.title} className="w-full" />
+                </SwiperSlide>
+              ))}
             </Swiper>
           </div>
 
           <div className="pl-5 pr-5">
             <div className="">
-              <h1 className="text-4xl">{products.title} </h1>
-              <p className="mt-5 text-gray-600 font-bold">{products.price}</p>
+              <h1 className="text-2xl sm:text-4xl">{products.title} </h1>
+              <p className="mt-5 text-gray-600 font-bold">₹ {products.price.toLocaleString("en-IN")}</p>
 
               <p className="mt-5 text-gray-400 font-bold">
                 MRP Inclusive of all taxes
               </p>
-              <p className="mt-5 ">
-                The Liveforest Embroidered Chiffon Saree in vibrant green from
-                Vanna Sets is pure elegance. Intricate embroidery dances across
-                luxurious chiffon, creating a breathtaking, effortlessly stylish
-                drape perfect for any special occasion. A modern classic.
-              </p>
-              <p className="mt-10 text-gray-400">Colour:</p>
-              <p className="p-5 bg-green-800 w-4 h-4 rounded-3xl border-2 border-gray-400"></p>
-              <p className="mt-5 text-gray-400">Size:</p>
+              <p className="mt-5 ">{products.description}</p>
             </div>
+            {isClothing && (
+            <>
+            <p className="mt-5 text-gray-400">Size:</p>
             <div className="flex  gap-5 mt-5">
               <h1 className="bg-transparen border-2 hover:bg-white border-gray-200 px-2 py-1 rounded-lg">
                 L
@@ -89,7 +110,12 @@ const ProductDetails = (props) => {
               <a href="#" className="text-blue-700 underline">
                 View Size Guide
               </a>
-              <p className="mt-11 text-gray-400">Delivery Method:</p>
+            </div>
+            </>
+            )}
+
+            <div className="mt-5 gap-3">
+              <p className="mt-6 text-gray-400">Delivery Method:</p>
               <div className=" flex justify-start mt-2 text-black gap-5">
                 <p className="flex gap-2">
                   <AiOutlineHome className="mt-1" />
@@ -104,46 +130,30 @@ const ProductDetails = (props) => {
 
             <div className="mt-5 flex gap-5 flex-col">
               <button
-                className="bg-[#264726] h-14 text-white px-5 py-2 rounded-md  flex gap-2 items-center justify-center"
-                onClick={() =>
-                  cart.setItem([
-                    ...cart.item,
-                    {
-                      id: products.id,
-                      name: products.title,
-                      price: products.price,
-                      img: products.first,
-                      img2: products.second,
-                    },
-                  ])
-                }
+                disabled={soldOut}
+                className="bg-[#264726] h-14 text-white px-5 py-2 rounded-md flex gap-2 items-center justify-center hover:bg-[#1E381E] disabled:opacity-50 disabled:cursor-not-allowed"
+                onClick={() => {
+                  cart.addToCart(entry);
+                  toast.success("Added to cart");
+                }}
               >
-                Add to Cart
+                {soldOut ? "Out of Stock" : "Add to Cart"}
                 <HiMiniShoppingBag />
               </button>
-              <Link
-                to="/wishlist"
-                className="bg-white text-black h-14 shadow-lg px-5 py-2 rounded-md flex gap-2 items-center justify-center"
-              >
-                <button
-                  className="bg-white text-black h-14 shadow-lg px-5 py-2 rounded-md flex gap-2 items-center justify-center"
-                  onClick={() =>
-                    cart.setWishlist([
-                      ...cart.wishlist,
-                      {
-                        id: products.id,
-                        name: products.title,
-                        price: products.price,
-                        img: products.first,
-                        img2: products.second,
-                      },
-                    ])
+              <button
+                className="bg-white text-black h-14 shadow-lg px-5 py-2 rounded-md flex gap-2 items-center justify-center hover:bg-gray-50"
+                onClick={() => {
+                  if (inWishlist) {
+                    navigate("/wishlist");
+                  } else {
+                    cart.addToWishlist(entry);
+                    toast.success("Added to wishlist");
                   }
-                >
-                  <FaHeart className="text-red-600" />
-                  Add to Wishlist
-                </button>
-              </Link>
+                }}
+              >
+                <FaHeart className="text-red-600" />
+                {inWishlist ? "View Wishlist" : "Add to Wishlist"}
+              </button>
               <hr />
             </div>
 

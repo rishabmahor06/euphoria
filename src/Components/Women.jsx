@@ -2,10 +2,11 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { Link } from "react-router-dom";
-import { woomen } from "../Data/women";
+import { useCatalog } from "../context/catalogContext";
 import { CiCircleList, CiGrid41 } from "react-icons/ci";
 
-const women = () => {
+const Women = () => {
+  const { women: woomen } = useCatalog();
   return (
     <div>
       <Navbar />
@@ -15,8 +16,8 @@ const women = () => {
             <h1>Home</h1>
             <h1>women</h1>
           </div>
-          <div className="pt-10 flex justify-between">
-            <div className="flex gap-5">
+          <div className="pt-10 flex flex-wrap gap-4 justify-between">
+            <div className="flex flex-wrap gap-5">
               <h3 className="flex gap-1 ">
                 Category
                 <MdKeyboardArrowDown className=" mt-1" />
@@ -185,7 +186,7 @@ const women = () => {
 
             <div>
               <div className="flex gap-3 justify-center items-center">
-                <h1>14Result</h1>
+                <h1>{woomen.length} Results</h1>
                 <CiGrid41 className="text-lg h-7 w-7 rounded-md px-1 py-1 border border-gray-600 hover:bg-[#F3F4F6]" />
 
                 <CiCircleList className="text-lg h-7 w-7 rounded-md px-1 py-1 border border-gray-600 hover:bg-[#F3F4F6]" />
@@ -213,11 +214,11 @@ const women = () => {
         <hr />
 
         <div>
-          <div className=" px-4 py-10 w-full h-full">
-            <div className="grid grid-cols-4 gap-1 justify-center  ">
+          <div className=" px-1 sm:px-4 py-10 w-full h-full">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2 justify-center  ">
               {woomen.map((img) => (
                 <div key={img.id} className="">
-                  <div className="relative w-[22rem] h-[35vw]  group overflow-hidden cursor-pointer">
+                  <div className="relative w-full aspect-[3/4] group overflow-hidden cursor-pointer">
                     <Link
                       to={`/productdetails/${img.title.replace(/\s+/g, "-")}/${
                         img.id
@@ -230,7 +231,7 @@ const women = () => {
                       />
                       <img
                         src={img.second}
-                        className="absolute inset-0  h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
+                        className="absolute inset-0 w-full h-full object-cover transition-opacity duration-500 opacity-0 group-hover:opacity-100"
                         alt="Craft 2"
                       />
                     </Link>
@@ -250,4 +251,4 @@ const women = () => {
   );
 };
 
-export default women;
+export default Women;
